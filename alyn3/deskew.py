@@ -34,7 +34,10 @@ class Deskew:
         rotated = rotate(img, rot_angle, resize=True)
 
         if self.display_image:
-            self.display(rotated)
+            try:
+                self.display(rotated)
+            except:
+                print("Display Error")
 
         if self.output_file:
             self.saveImage(rotated*255)
@@ -42,6 +45,7 @@ class Deskew:
     def saveImage(self, img):
         path = self.skew_obj.check_path(self.output_file)
         io.imsave(path, img.astype(np.uint8))
+
 
     def display(self, img):
 

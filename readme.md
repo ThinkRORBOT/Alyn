@@ -43,9 +43,9 @@ sd.run()
 from alyn3 import Deskew
 d = Deskew(
 	input_file='path_to_file',
-	display_image='preview the image on screen',
+	display_image='preview the image on screen', (True/False)
 	output_file='path_for_deskewed image',
-	r_angle='offest_angle_in_degrees_to_control_orientation')`
+	r_angle='offest_angle_in_degrees_to_control_orientation')` (int)
 d.run()
 ```
 ### Requires

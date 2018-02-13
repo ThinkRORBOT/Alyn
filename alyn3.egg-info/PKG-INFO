@@ -1,0 +1,13 @@
+Metadata-Version: 1.1
+Name: alyn3
+Version: 0.1.1
+Summary: Fix skew in images
+Home-page: https://github.com/THINKRORBOT/Alyn.git
+Author: Kakul Chandra
+Author-email: kakulchandra911@gmail.com
+License: MIT
+Download-URL: https://github.com
+Description-Content-Type: UNKNOWN
+Description: UNKNOWN
+Keywords: image-processing,image-deskew,deskew,rotate,text
+Platform: UNKNOWN

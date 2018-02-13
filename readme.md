@@ -1,6 +1,6 @@
 # Alyn
 
-[![PyPI version](https://badge.fury.io/py/alyn.svg)](https://badge.fury.io/py/alyn)
+[![PyPI version](https://badge.fury.io/py/alyn3.svg)](https://badge.fury.io/py/alyn3)
 
 ## Skew detection and correction in images containing text
 
@@ -16,7 +16,7 @@ Recommended way(using virtualenv):
 1. `mkdir alyn-test`
 2. `cd alyn test`
 3. `mkvirtualenv .`
-4. `pip install alyn`
+4. `pip install alyn3`
 5. `source bin/activate`
 
 #### To detect skew angle in image:
@@ -40,7 +40,7 @@ sd.run()
 #### To deskew image:
 
 ```
-from alyn import Deskew
+from alyn3 import Deskew
 d = Deskew(
 	input_file='path_to_file',
 	display_image='preview the image on screen',

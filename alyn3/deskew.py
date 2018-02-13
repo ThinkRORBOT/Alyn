@@ -1,6 +1,7 @@
 """ Deskews file after getting skew angle """
 import optparse
 import numpy as np
+import math
 import matplotlib.pyplot as plt
 
 from .skew_detect import SkewDetect
@@ -10,10 +11,11 @@ from skimage.transform import rotate
 
 class Deskew:
 
-    def __init__(self, input_file, display_image, output_file, r_angle):
+    def __init__(self, input_file, display_image, crop_image, output_file, r_angle):
 
         self.input_file = input_file
         self.display_image = display_image
+        self.crop_image = crop_image
         self.output_file = output_file
         self.r_angle = r_angle
         self.skew_obj = SkewDetect(self.input_file)
@@ -39,6 +41,17 @@ class Deskew:
             except:
                 print("Display Error")
 
+        if self.crop_image:
+            imageHeight, imageWidth = rotated.shape[:2]
+            rot_angle = abs(rot_angle)
+            if rot_angle > 45:
+                rot_angle = 90 - rot_angle
+            radianAngle = math.radians(rot_angle)
+            oppositeSide = math.tan(radianAngle) * imageWidth
+            oppositeSide2 = math.tan(radianAngle) * imageHeight
+            #print(imageHeight, oppositeSide, imageWidth, oppositeSide2, rot_angle)
+            rotated = rotated[int(oppositeSide): 0 + int(imageHeight - oppositeSide), int(oppositeSide2): 0 + int(imageWidth - oppositeSide2)]
+
         if self.output_file:
             self.saveImage(rotated*255)
 
@@ -53,9 +66,9 @@ class Deskew:
         plt.show()
 
     def run(self):
-
+        angle = 0
         if self.input_file:
-            self.deskew()
+             self.deskew()
 
 
 if __name__ == '__main__':
@@ -88,6 +101,7 @@ if __name__ == '__main__':
     deskew_obj = Deskew(
         options.input_file,
         options.display_image,
+        options.crop_image,
         options.output_file,
         options.r_angle)
 

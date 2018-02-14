@@ -43,13 +43,15 @@ class Deskew:
 
         if self.crop_image:
             imageHeight, imageWidth = rotated.shape[:2]
+            print(rotated.shape)
             rot_angle = abs(rot_angle)
+            rot_angle = rot_angle%90
             if rot_angle > 45:
                 rot_angle = 90 - rot_angle
             radianAngle = math.radians(rot_angle)
-            oppositeSide = math.tan(radianAngle) * imageWidth
-            oppositeSide2 = math.tan(radianAngle) * imageHeight
-            #print(imageHeight, oppositeSide, imageWidth, oppositeSide2, rot_angle)
+            oppositeSide = abs(math.tan(radianAngle) * imageWidth)
+            oppositeSide2 = abs(math.tan(radianAngle) * imageHeight)
+            print(imageHeight, oppositeSide, imageWidth, oppositeSide2, rot_angle)
             rotated = rotated[int(oppositeSide): 0 + int(imageHeight - oppositeSide), int(oppositeSide2): 0 + int(imageWidth - oppositeSide2)]
 
         if self.output_file:

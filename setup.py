@@ -4,7 +4,7 @@ from setuptools import setup
 
 setup(
     name="alyn3",
-    version="0.1.1",
+    version="0.1.2",
     author="Kakul Chandra",
     description="Fix skew in images",
     author_email="kakulchandra911@gmail.com",

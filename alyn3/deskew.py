@@ -11,13 +11,14 @@ from skimage.transform import rotate
 
 class Deskew:
 
-    def __init__(self, input_file, display_image, crop_image, output_file, r_angle):
+    def __init__(self, input_file, display_image, crop_image, output_file, r_angle, max_angle = 90.0):
 
         self.input_file = input_file
         self.display_image = display_image
         self.crop_image = crop_image
         self.output_file = output_file
         self.r_angle = r_angle
+        self.max_angle=max_angle
         self.skew_obj = SkewDetect(self.input_file)
 
     def deskew(self):
@@ -26,12 +27,22 @@ class Deskew:
         res = self.skew_obj.process_single_file()
         angle = res['Estimated Angle']
 
+        rot_angle = 0
+
         if angle >= 0 and angle <= 90:
             rot_angle = angle - 90 + self.r_angle
         if angle >= -45 and angle < 0:
             rot_angle = angle - 90 + self.r_angle
         if angle >= -90 and angle < -45:
             rot_angle = 90 + angle + self.r_angle
+
+        negativeAngle = False
+        if rot_angle < 0:
+            negativeAngle = True
+        if abs(rot_angle) > abs(self.max_angle):
+            rot_angle = rot_angle%self.max_angle
+            if negativeAngle:
+                rot_angle = -rot_angle
 
         rotated = rotate(img, rot_angle, resize=True)
 
@@ -43,7 +54,7 @@ class Deskew:
 
         if self.crop_image:
             imageHeight, imageWidth = rotated.shape[:2]
-            print(rotated.shape)
+            #print(rotated.shape)
             rot_angle = abs(rot_angle)
             rot_angle = rot_angle%90
             if rot_angle > 45:
@@ -51,8 +62,11 @@ class Deskew:
             radianAngle = math.radians(rot_angle)
             oppositeSide = abs(math.tan(radianAngle) * imageWidth)
             oppositeSide2 = abs(math.tan(radianAngle) * imageHeight)
-            print(imageHeight, oppositeSide, imageWidth, oppositeSide2, rot_angle)
-            rotated = rotated[int(oppositeSide): 0 + int(imageHeight - oppositeSide), int(oppositeSide2): 0 + int(imageWidth - oppositeSide2)]
+            if oppositeSide > imageHeight / 2 or oppositeSide2 > imageWidth/2 or abs(rot_angle) > 20:
+                print("Not Cropping Image")
+            else:
+                print(imageHeight, oppositeSide, imageWidth, oppositeSide2, rot_angle)
+                rotated = rotated[int(oppositeSide): 0 + int(imageHeight - oppositeSide), int(oppositeSide2): 0 + int(imageWidth - oppositeSide2)]
 
         if self.output_file:
             self.saveImage(rotated*255)
